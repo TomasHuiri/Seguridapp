@@ -1,4 +1,4 @@
-package model
+package com.example.seguridapp.model
 
 enum class Categoria(val etiqueta: String) {
     INCENDIO("Incendio estructural"),
@@ -10,6 +10,6 @@ enum class Categoria(val etiqueta: String) {
 
     companion object {
         fun desde(nombre: String): Categoria =
-            Categoria.entries.firstOrNull { it.name == nombre } ?: OTRO
+            entries.firstOrNull { it.name == nombre } ?: OTRO
     }
 }

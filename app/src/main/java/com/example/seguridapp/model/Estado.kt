@@ -1,4 +1,4 @@
-package model
+package com.example.seguridapp.model
 
 enum class Estado(val etiqueta: String) {
     PENDIENTE("Pendiente"),
