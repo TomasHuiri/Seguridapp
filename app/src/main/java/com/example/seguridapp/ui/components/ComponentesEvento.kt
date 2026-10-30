@@ -1,4 +1,4 @@
-package com.example.seguridapp.ui.components
+    package com.example.seguridapp.ui.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
@@ -154,10 +154,12 @@ fun ResumenCard(
     valor: Int,
     fondo: Color,
     contenido: Color,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     val animado by animateIntAsState(valor, tween(800), label = "contador")
     Card(
+        onClick = onClick,
         modifier = modifier.height(92.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = fondo)
