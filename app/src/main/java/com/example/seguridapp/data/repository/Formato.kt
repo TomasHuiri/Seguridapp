@@ -1,4 +1,4 @@
-package com.example.seguridapp.util
+package com.example.seguridapp.data.repository
 
 import java.text.SimpleDateFormat
 import java.util.Date

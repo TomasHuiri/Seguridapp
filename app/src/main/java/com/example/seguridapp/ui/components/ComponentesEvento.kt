@@ -56,7 +56,7 @@ import com.example.seguridapp.ui.theme.PrioridadAlta
 import com.example.seguridapp.ui.theme.PrioridadBaja
 import com.example.seguridapp.ui.theme.PrioridadMedia
 import com.example.seguridapp.ui.theme.PrioridadSinDefinir
-import com.example.seguridapp.util.Formato
+import com.example.seguridapp.data.repository.Formato
 
 fun iconoCategoria(c: Categoria): ImageVector = when (c) {
     Categoria.INCENDIO -> Icons.Filled.LocalFireDepartment

@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -65,9 +64,9 @@ import com.example.seguridapp.ui.components.BotonCarga
 import com.example.seguridapp.ui.components.CampoTexto
 import com.example.seguridapp.ui.components.DropdownCampo
 import com.example.seguridapp.ui.components.EvidenciaImagen
-import com.example.seguridapp.util.Formato
-import com.example.seguridapp.util.FotoHelper
-import com.example.seguridapp.util.UbicacionHelper
+import com.example.seguridapp.data.repository.Formato
+import com.example.seguridapp.data.repository.FotoHelper
+import com.example.seguridapp.data.repository.UbicacionHelper
 import com.example.seguridapp.viewmodel.EventoFormViewModel
 import kotlinx.coroutines.launch
 import java.io.File

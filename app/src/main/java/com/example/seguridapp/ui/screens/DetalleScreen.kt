@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccessTime
@@ -76,7 +75,7 @@ import com.example.seguridapp.ui.components.DropdownCampo
 import com.example.seguridapp.ui.components.EstadoChip
 import com.example.seguridapp.ui.components.EvidenciaImagen
 import com.example.seguridapp.ui.components.colorPrioridad
-import com.example.seguridapp.util.Formato
+import com.example.seguridapp.data.repository.Formato
 import com.example.seguridapp.viewmodel.DetalleViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

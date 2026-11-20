@@ -1,4 +1,4 @@
-package com.example.seguridapp.util
+package com.example.seguridapp.data.repository
 
 object Validators {
     private val EMAIL = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")

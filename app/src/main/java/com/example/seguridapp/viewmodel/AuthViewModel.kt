@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.seguridapp.data.local.UsuarioEntity
 import com.example.seguridapp.data.repository.UsuarioRepository
 import com.example.seguridapp.data.session.SessionStore
-import com.example.seguridapp.util.Validators
+import com.example.seguridapp.data.repository.Validators
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

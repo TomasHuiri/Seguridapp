@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.seguridapp.data.local.EventoEntity
 import com.example.seguridapp.data.local.SeguimientoEntity
 import com.example.seguridapp.data.repository.EventoRepository
-import com.example.seguridapp.util.Validators
+import com.example.seguridapp.data.repository.Validators
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

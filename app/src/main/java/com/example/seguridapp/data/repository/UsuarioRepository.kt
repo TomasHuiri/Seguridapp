@@ -3,9 +3,7 @@ package com.example.seguridapp.data.repository
 import com.example.seguridapp.data.local.UsuarioDao
 import com.example.seguridapp.data.local.UsuarioEntity
 import com.example.seguridapp.model.Rol
-import com.example.seguridapp.util.Hash
 import kotlinx.coroutines.flow.Flow
-import kotlin.compareTo
 
 class UsuarioRepository(private val dao: UsuarioDao) {
 

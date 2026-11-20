@@ -6,7 +6,7 @@ import com.example.seguridapp.data.local.UsuarioEntity
 import com.example.seguridapp.data.repository.EventoRepository
 import com.example.seguridapp.model.Categoria
 import com.example.seguridapp.model.Prioridad
-import com.example.seguridapp.util.Validators
+import com.example.seguridapp.data.repository.Validators
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
