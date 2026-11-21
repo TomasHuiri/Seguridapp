@@ -56,6 +56,8 @@ import com.example.seguridapp.viewmodel.EventoFormViewModel
 import com.example.seguridapp.viewmodel.EventosViewModel
 import com.example.seguridapp.viewmodel.UsuariosViewModel
 import com.example.seguridapp.model.Estado
+import com.example.seguridapp.model.Rol
+
 
 object Rutas {
     const val INICIO = "inicio"
@@ -212,8 +214,18 @@ private fun Contenido(authVm: AuthViewModel, iniciaLogueado: Boolean, hayUsuario
             }
             composable(Rutas.USUARIOS) {
                 ConUsuario(authVm) { usuario ->
-                    val vm: UsuariosViewModel = viewModel(factory = AppViewModelProvider.Factory)
-                    UsuariosScreen(vm = vm, usuarioActual = usuario, onVolver = { navController.popBackStack() })
+                    if (Rol.desde(usuario.rol).esAdmin) {
+                        val vm: UsuariosViewModel =
+                            viewModel(factory = AppViewModelProvider.Factory)
+
+                        UsuariosScreen(
+                            vm = vm,
+                            usuarioActual = usuario,
+                            onVolver = { navController.popBackStack() }
+                        )
+                    } else {
+                        Text("No tienes permiso para acceder")
+                    }
                 }
             }
         }

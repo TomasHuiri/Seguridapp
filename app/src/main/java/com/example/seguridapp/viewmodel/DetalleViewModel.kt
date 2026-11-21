@@ -55,25 +55,48 @@ class DetalleViewModel(
             _ui.update { it.copy(observacionError = error) }
             return
         }
+
         viewModelScope.launch {
-            repo.agregarObservacion(eventoId, _ui.value.observacion, autor)
-            _ui.update { it.copy(observacion = "", observacionError = null, mensaje = "Observación registrada") }
+            val exito = repo.agregarObservacion(
+                eventoId, _ui.value.observacion, autor
+            )
+
+            _ui.update {
+                if (exito) it.copy(
+                    observacion = "",
+                    observacionError = null,
+                    mensaje = "Observación registrada"
+                )
+                else it.copy(mensaje = "No se pudo agregar la observación")
+            }
         }
     }
-
     fun avanzarEstado(autor: String) {
         viewModelScope.launch {
-            repo.avanzarEstado(eventoId, autor)
-            _ui.update { it.copy(mensaje = "Estado actualizado") }
+            val exito = repo.avanzarEstado(eventoId, autor)
+
+            _ui.update {
+                it.copy(mensaje = if (exito)
+                    "Estado actualizado"
+                else
+                    "No tienes permiso o el estado no permite avanzar")
+            }
         }
     }
 
     fun asignar(unidad: String, autor: String) {
         viewModelScope.launch {
-            repo.asignar(eventoId, unidad, autor)
-            _ui.update { it.copy(mensaje = "Caso derivado correctamente") }
+            val exito = repo.asignar(eventoId, unidad, autor)
+
+            _ui.update {
+                it.copy(mensaje = if (exito)
+                    "Caso derivado correctamente"
+                else
+                    "No se pudo derivar el evento")
+            }
         }
     }
+
 
     fun cancelar(autor: String, onExito: () -> Unit) {
         val error = Validators.motivo(_ui.value.motivo)
@@ -81,10 +104,20 @@ class DetalleViewModel(
             _ui.update { it.copy(motivoError = error) }
             return
         }
+
         viewModelScope.launch {
-            repo.cancelar(eventoId, _ui.value.motivo, autor)
-            _ui.update { it.copy(motivo = "", motivoError = null, mensaje = "Evento cancelado") }
-            onExito()
+            val exito = repo.cancelar(eventoId, _ui.value.motivo, autor)
+
+            _ui.update {
+                if (exito) it.copy(
+                    motivo = "",
+                    motivoError = null,
+                    mensaje = "Evento cancelado"
+                )
+                else it.copy(mensaje = "No se pudo cancelar el evento")
+            }
+
+            if (exito) onExito()
         }
     }
 

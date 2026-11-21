@@ -11,8 +11,14 @@ import com.example.seguridapp.model.Unidades
 import kotlinx.coroutines.flow.Flow
 import kotlin.compareTo
 import kotlin.text.format
+import com.example.seguridapp.model.Permisos
+import com.example.seguridapp.model.Rol
 
-class EventoRepository(private val dao: EventoDao) {
+
+class EventoRepository(
+    private val dao: EventoDao,
+    private val usuarios: UsuarioRepository
+) {
 
     fun observarTodos(): Flow<List<EventoEntity>> = dao.observarTodos()
 
@@ -55,26 +61,123 @@ class EventoRepository(private val dao: EventoDao) {
         return id
     }
 
-    suspend fun avanzarEstado(id: Long, autor: String) {
-        val evento = dao.obtener(id) ?: return
-        val siguiente = Estado.desde(evento.estado).siguiente() ?: return
+
+    suspend fun avanzarEstado(id: Long, autor: String): Boolean {
+        val usuario = usuarios.usuarioActual() ?: return false
+        val evento = dao.obtener(id) ?: return false
+        val estado = Estado.desde(evento.estado)
+        val rol = Rol.desde(usuario.rol)
+
+        if (!Permisos.puedeCambiarEstado(rol, estado)) {
+            return false
+        }
+
+        val siguiente = estado.siguiente() ?: return false
+
         dao.actualizar(evento.copy(estado = siguiente.name))
-        registrarSeguimiento(id, TipoSeguimiento.ESTADO, "Estado cambiado a ${siguiente.etiqueta}", autor)
+
+        registrarSeguimiento(
+            id,
+            TipoSeguimiento.ESTADO,
+            "Estado cambiado a ${siguiente.etiqueta}",
+            usuario.nombre
+        )
+
+        return true
     }
 
-    suspend fun agregarObservacion(id: Long, texto: String, autor: String) =
-        registrarSeguimiento(id, TipoSeguimiento.OBSERVACION, texto.trim(), autor)
 
-    suspend fun asignar(id: Long, unidad: String, autor: String) {
-        val evento = dao.obtener(id) ?: return
+    suspend fun agregarObservacion(
+        id: Long,
+        texto: String,
+        autor: String
+    ): Boolean {
+        val usuario = usuarios.usuarioActual() ?: return false
+        val evento = dao.obtener(id) ?: return false
+
+        val rol = Rol.desde(usuario.rol)
+        val estado = Estado.desde(evento.estado)
+        val esCreador = evento.creadoPor == usuario.id
+
+        if (!Permisos.puedeObservar(rol, estado, esCreador)) {
+            return false
+        }
+
+        if (texto.isBlank()) return false
+
+        registrarSeguimiento(
+            id,
+            TipoSeguimiento.OBSERVACION,
+            texto.trim(),
+            usuario.nombre
+        )
+
+        return true
+    }
+
+
+    suspend fun asignar(
+        id: Long,
+        unidad: String,
+        autor: String
+    ): Boolean {
+        val usuario = usuarios.usuarioActual() ?: return false
+        val evento = dao.obtener(id) ?: return false
+        val rol = Rol.desde(usuario.rol)
+        val estado = Estado.desde(evento.estado)
+
+        if (!Permisos.puedeAsignar(rol, estado)) {
+            return false
+        }
+
+        if (unidad !in Unidades.lista) return false
+
         dao.actualizar(evento.copy(responsable = unidad))
-        registrarSeguimiento(id, TipoSeguimiento.ASIGNACION, "Caso derivado a: $unidad", autor)
+
+        registrarSeguimiento(
+            id,
+            TipoSeguimiento.ASIGNACION,
+            "Caso derivado a: $unidad",
+            usuario.nombre
+        )
+
+        return true
     }
 
-    suspend fun cancelar(id: Long, motivo: String, autor: String) {
-        val evento = dao.obtener(id) ?: return
-        dao.actualizar(evento.copy(estado = Estado.CANCELADO.name, motivoCancelacion = motivo.trim()))
-        registrarSeguimiento(id, TipoSeguimiento.CANCELACION, "Evento cancelado. Motivo: ${motivo.trim()}", autor)
+
+    suspend fun cancelar(
+        id: Long,
+        motivo: String,
+        autor: String
+    ): Boolean {
+        val usuario = usuarios.usuarioActual() ?: return false
+        val evento = dao.obtener(id) ?: return false
+
+        val rol = Rol.desde(usuario.rol)
+        val estado = Estado.desde(evento.estado)
+        val esCreador = evento.creadoPor == usuario.id
+
+        if (!Permisos.puedeCancelar(rol, estado, esCreador)) {
+            return false
+        }
+
+        if (motivo.isBlank()) return false
+
+        dao.actualizar(
+            evento.copy(
+                estado = Estado.CANCELADO.name,
+                motivoCancelacion = motivo.trim()
+            )
+        )
+
+        registrarSeguimiento(
+            id,
+            TipoSeguimiento.CANCELACION,
+            "Evento cancelado. Motivo: ${motivo.trim()}",
+            usuario.nombre
+        )
+
+        return true
     }
 
     private suspend fun registrarSeguimiento(

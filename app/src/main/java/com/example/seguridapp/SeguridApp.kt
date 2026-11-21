@@ -11,10 +11,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AppContainer(context: Context) {
+
     private val db = SeguridadDatabase.obtener(context)
-    val usuarioRepository = UsuarioRepository(db.usuarioDao())
-    val eventoRepository = EventoRepository(db.eventoDao())
+
     val sessionStore = SessionStore(context.applicationContext)
+
+    val usuarioRepository = UsuarioRepository(
+        db.usuarioDao(),
+        sessionStore
+    )
+
+    val eventoRepository = EventoRepository(
+        db.eventoDao(),
+        usuarioRepository
+    )
 
     suspend fun sembrarDatosDePrueba() {
         usuarioRepository.sembrar()
