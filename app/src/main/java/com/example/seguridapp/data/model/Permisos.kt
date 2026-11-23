@@ -1,4 +1,4 @@
-package com.example.seguridapp.model
+package com.example.seguridapp.data.model
 
 object Permisos {
     fun puedeCambiarEstado(rol: Rol, estado: Estado) =

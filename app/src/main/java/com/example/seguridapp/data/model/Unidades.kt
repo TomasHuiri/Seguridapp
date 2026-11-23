@@ -1,4 +1,4 @@
-package com.example.seguridapp.model
+package com.example.seguridapp.data.model
 
 object Unidades {
     const val SIN_ASIGNAR = "Sin asignar"

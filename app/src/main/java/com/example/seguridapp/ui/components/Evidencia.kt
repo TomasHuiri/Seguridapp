@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.example.seguridapp.data.repository.FotoHelper
+import com.example.seguridapp.repository.FotoHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

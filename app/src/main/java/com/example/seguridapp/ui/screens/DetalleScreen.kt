@@ -64,18 +64,18 @@ import androidx.compose.ui.unit.dp
 import com.example.seguridapp.data.local.EventoEntity
 import com.example.seguridapp.data.local.SeguimientoEntity
 import com.example.seguridapp.data.local.UsuarioEntity
-import com.example.seguridapp.model.Categoria
-import com.example.seguridapp.model.Estado
-import com.example.seguridapp.model.Permisos
-import com.example.seguridapp.model.Prioridad
-import com.example.seguridapp.model.Rol
-import com.example.seguridapp.model.Unidades
+import com.example.seguridapp.data.model.Categoria
+import com.example.seguridapp.data.model.Estado
+import com.example.seguridapp.data.model.Permisos
+import com.example.seguridapp.data.model.Prioridad
+import com.example.seguridapp.data.model.Rol
+import com.example.seguridapp.data.model.Unidades
 import com.example.seguridapp.ui.components.CampoTexto
 import com.example.seguridapp.ui.components.DropdownCampo
 import com.example.seguridapp.ui.components.EstadoChip
 import com.example.seguridapp.ui.components.EvidenciaImagen
 import com.example.seguridapp.ui.components.colorPrioridad
-import com.example.seguridapp.data.repository.Formato
+import com.example.seguridapp.repository.Formato
 import com.example.seguridapp.viewmodel.DetalleViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -40,8 +40,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import com.example.seguridapp.data.repository.Formato
-import com.example.seguridapp.data.repository.UbicacionHelper
+import com.example.seguridapp.repository.Formato
+import com.example.seguridapp.repository.UbicacionHelper
 import com.example.seguridapp.viewmodel.EventoFormViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition

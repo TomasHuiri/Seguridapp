@@ -55,8 +55,11 @@ import com.example.seguridapp.viewmodel.DetalleViewModel
 import com.example.seguridapp.viewmodel.EventoFormViewModel
 import com.example.seguridapp.viewmodel.EventosViewModel
 import com.example.seguridapp.viewmodel.UsuariosViewModel
-import com.example.seguridapp.model.Estado
-import com.example.seguridapp.model.Rol
+import com.example.seguridapp.data.model.Estado
+import com.example.seguridapp.data.model.Rol
+import com.example.seguridapp.ui.screens.PostScreen
+import com.example.seguridapp.viewmodel.PostViewModel
+
 
 
 object Rutas {
@@ -70,6 +73,8 @@ object Rutas {
     const val DETALLE = "detalle/{id}"
     const val PERFIL = "perfil"
     const val USUARIOS = "usuarios"
+
+    const val POSTS = "posts"
 
     fun detalle(id: Long) = "detalle/$id"
     fun eventos(estado: Estado? = null) =
@@ -202,6 +207,9 @@ private fun Contenido(authVm: AuthViewModel, iniciaLogueado: Boolean, hayUsuario
                     PerfilScreen(
                         usuario = usuario,
                         onUsuarios = { navController.navigate(Rutas.USUARIOS) },
+                        onPublicaciones = {
+                            navController.navigate(Rutas.POSTS)
+                        },
                         onCerrarSesion = {
                             authVm.cerrarSesion {
                                 navController.navigate(Rutas.INICIO) {
@@ -209,6 +217,19 @@ private fun Contenido(authVm: AuthViewModel, iniciaLogueado: Boolean, hayUsuario
                                 }
                             }
                         }
+                    )
+                }
+            }
+            composable(Rutas.POSTS) {
+                ConUsuario(authVm) { _ ->
+
+                    val vm: PostViewModel = viewModel(
+                        factory = AppViewModelProvider.Factory
+                    )
+
+                    PostScreen(
+                        vm = vm,
+                        onVolver = { navController.popBackStack() }
                     )
                 }
             }

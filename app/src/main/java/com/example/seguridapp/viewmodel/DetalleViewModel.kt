@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.seguridapp.data.local.EventoEntity
 import com.example.seguridapp.data.local.SeguimientoEntity
-import com.example.seguridapp.data.repository.EventoRepository
-import com.example.seguridapp.data.repository.Validators
+import com.example.seguridapp.repository.EventoRepository
+import com.example.seguridapp.repository.Validators
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -28,98 +29,176 @@ class DetalleViewModel(
     private val repo: EventoRepository
 ) : ViewModel() {
 
-    private val eventoId: Long = savedStateHandle.get<Long>("id") ?: -1L
+    private val eventoId: Long =
+        savedStateHandle.get<Long>("id") ?: -1L
 
-    val evento: StateFlow<EventoEntity?> = repo.observarPorId(eventoId)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+    val evento: StateFlow<EventoEntity?> =
+        repo.observarPorId(eventoId)
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                null
+            )
 
-    val seguimientos: StateFlow<List<SeguimientoEntity>> = repo.observarSeguimientos(eventoId)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    val seguimientos: StateFlow<List<SeguimientoEntity>> =
+        repo.observarSeguimientos(eventoId)
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                emptyList()
+            )
 
     private val _ui = MutableStateFlow(DetalleUi())
     val ui = _ui.asStateFlow()
 
+    init {
+        viewModelScope.launch {
+            try {
+                repo.refrescarDetalle(eventoId)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                _ui.update {
+                    it.copy(
+                        mensaje = "No se pudo consultar el evento del servidor"
+                    )
+                }
+            }
+        }
+    }
+
     fun onObservacion(v: String) = _ui.update {
-        it.copy(observacion = v, observacionError = if (v.isEmpty()) null else Validators.observacion(v))
+        it.copy(
+            observacion = v,
+            observacionError = if (v.isEmpty()) null
+            else Validators.observacion(v)
+        )
     }
 
     fun onMotivo(v: String) = _ui.update {
-        it.copy(motivo = v, motivoError = if (v.isEmpty()) null else Validators.motivo(v))
+        it.copy(
+            motivo = v,
+            motivoError = if (v.isEmpty()) null
+            else Validators.motivo(v)
+        )
     }
 
-    fun mensajeMostrado() = _ui.update { it.copy(mensaje = null) }
+    fun mensajeMostrado() = _ui.update {
+        it.copy(mensaje = null)
+    }
+
+    private fun ejecutar(
+        operacion: suspend () -> Boolean,
+        mensajeExito: String,
+        alExito: () -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            try {
+                val exito = operacion()
+
+                _ui.update {
+                    it.copy(
+                        mensaje = if (exito)
+                            mensajeExito
+                        else
+                            "No tienes permiso o la operación no está permitida"
+                    )
+                }
+
+                if (exito) alExito()
+
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                _ui.update {
+                    it.copy(
+                        mensaje = "No se pudo completar la operación en el servidor"
+                    )
+                }
+            }
+        }
+    }
 
     fun agregarObservacion(autor: String) {
-        val error = Validators.observacion(_ui.value.observacion)
+        val texto = _ui.value.observacion
+        val error = Validators.observacion(texto)
+
         if (error != null) {
-            _ui.update { it.copy(observacionError = error) }
+            _ui.update {
+                it.copy(observacionError = error)
+            }
             return
         }
 
-        viewModelScope.launch {
-            val exito = repo.agregarObservacion(
-                eventoId, _ui.value.observacion, autor
-            )
-
-            _ui.update {
-                if (exito) it.copy(
-                    observacion = "",
-                    observacionError = null,
-                    mensaje = "Observación registrada"
-                )
-                else it.copy(mensaje = "No se pudo agregar la observación")
+        ejecutar(
+            operacion = {
+                repo.agregarObservacion(eventoId, texto, autor)
+            },
+            mensajeExito = "Observación registrada",
+            alExito = {
+                _ui.update {
+                    it.copy(
+                        observacion = "",
+                        observacionError = null
+                    )
+                }
             }
-        }
+        )
     }
-    fun avanzarEstado(autor: String) {
-        viewModelScope.launch {
-            val exito = repo.avanzarEstado(eventoId, autor)
 
-            _ui.update {
-                it.copy(mensaje = if (exito)
-                    "Estado actualizado"
-                else
-                    "No tienes permiso o el estado no permite avanzar")
-            }
-        }
+    fun avanzarEstado(autor: String) {
+        ejecutar(
+            operacion = {
+                repo.avanzarEstado(eventoId, autor)
+            },
+            mensajeExito = "Estado actualizado"
+        )
     }
 
     fun asignar(unidad: String, autor: String) {
-        viewModelScope.launch {
-            val exito = repo.asignar(eventoId, unidad, autor)
-
-            _ui.update {
-                it.copy(mensaje = if (exito)
-                    "Caso derivado correctamente"
-                else
-                    "No se pudo derivar el evento")
-            }
-        }
+        ejecutar(
+            operacion = {
+                repo.asignar(eventoId, unidad, autor)
+            },
+            mensajeExito = "Caso derivado correctamente"
+        )
     }
 
+    fun cancelar(
+        autor: String,
+        onExito: () -> Unit
+    ) {
+        val motivo = _ui.value.motivo
+        val error = Validators.motivo(motivo)
 
-    fun cancelar(autor: String, onExito: () -> Unit) {
-        val error = Validators.motivo(_ui.value.motivo)
         if (error != null) {
-            _ui.update { it.copy(motivoError = error) }
+            _ui.update {
+                it.copy(motivoError = error)
+            }
             return
         }
 
-        viewModelScope.launch {
-            val exito = repo.cancelar(eventoId, _ui.value.motivo, autor)
-
-            _ui.update {
-                if (exito) it.copy(
-                    motivo = "",
-                    motivoError = null,
-                    mensaje = "Evento cancelado"
-                )
-                else it.copy(mensaje = "No se pudo cancelar el evento")
+        ejecutar(
+            operacion = {
+                repo.cancelar(eventoId, motivo, autor)
+            },
+            mensajeExito = "Evento cancelado",
+            alExito = {
+                _ui.update {
+                    it.copy(
+                        motivo = "",
+                        motivoError = null
+                    )
+                }
+                onExito()
             }
-
-            if (exito) onExito()
-        }
+        )
     }
 
-    fun limpiarCancelacion() = _ui.update { it.copy(motivo = "", motivoError = null) }
+    fun limpiarCancelacion() = _ui.update {
+        it.copy(
+            motivo = "",
+            motivoError = null
+        )
+    }
 }

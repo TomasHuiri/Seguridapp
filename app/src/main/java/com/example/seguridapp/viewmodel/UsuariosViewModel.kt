@@ -3,8 +3,8 @@ package com.example.seguridapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.seguridapp.data.local.UsuarioEntity
-import com.example.seguridapp.data.repository.UsuarioRepository
-import com.example.seguridapp.model.Rol
+import com.example.seguridapp.repository.UsuarioRepository
+import com.example.seguridapp.data.model.Rol
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn

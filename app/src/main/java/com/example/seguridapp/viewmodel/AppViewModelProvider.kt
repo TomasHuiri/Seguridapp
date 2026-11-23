@@ -14,6 +14,7 @@ object AppViewModelProvider {
         initializer { EventosViewModel(app().container.eventoRepository, this.createSavedStateHandle()) }
         initializer { DetalleViewModel(this.createSavedStateHandle(), app().container.eventoRepository) }
         initializer { UsuariosViewModel(app().container.usuarioRepository) }
+        initializer { PostViewModel(app().container.postRepository) }
     }
 }
 

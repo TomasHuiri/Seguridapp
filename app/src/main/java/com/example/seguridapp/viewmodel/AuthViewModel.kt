@@ -3,9 +3,9 @@ package com.example.seguridapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.seguridapp.data.local.UsuarioEntity
-import com.example.seguridapp.data.repository.UsuarioRepository
+import com.example.seguridapp.repository.UsuarioRepository
 import com.example.seguridapp.data.session.SessionStore
-import com.example.seguridapp.data.repository.Validators
+import com.example.seguridapp.repository.Validators
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

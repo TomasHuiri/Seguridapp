@@ -40,10 +40,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.seguridapp.data.local.UsuarioEntity
-import com.example.seguridapp.model.Categoria
-import com.example.seguridapp.model.Estado
-import com.example.seguridapp.model.Prioridad
-import com.example.seguridapp.model.Rol
+import com.example.seguridapp.data.model.Categoria
+import com.example.seguridapp.data.model.Estado
+import com.example.seguridapp.data.model.Prioridad
+import com.example.seguridapp.data.model.Rol
 import com.example.seguridapp.ui.components.EstadoVacio
 import com.example.seguridapp.ui.components.EventoCard
 import com.example.seguridapp.ui.components.ResumenCard
@@ -60,6 +60,7 @@ fun DashboardScreen(
 ) {
     val resumen by vm.resumen.collectAsState()
     val eventos by vm.eventos.collectAsState()
+    val error by vm.error.collectAsState()
     Scaffold(
         topBar = {
             TopAppBar(
@@ -82,6 +83,19 @@ fun DashboardScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            if (error != null) {
+                item {
+                    Column {
+                        Text(
+                            error.orEmpty(),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                        TextButton(onClick = vm::cargar) {
+                            Text("Reintentar")
+                        }
+                    }
+                }
+            }
             item {
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     ResumenCard(
@@ -156,12 +170,22 @@ fun EventosScreen(vm: EventosViewModel, onVerEvento: (Long) -> Unit) {
     val categoria by vm.filtroCategoria.collectAsState()
     val prioridad by vm.filtroPrioridad.collectAsState()
     val prioridades = Prioridad.entries.filter { it != Prioridad.INDETERMINADO }
+    val error by vm.error.collectAsState()
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Eventos", fontWeight = FontWeight.Bold) }) },
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { padding ->
         Column(Modifier.padding(padding)) {
+            if (error != null) {
+                Text(
+                    error.orEmpty(),
+                    color = MaterialTheme.colorScheme.error
+                )
+                TextButton(onClick = vm::cargar) {
+                    Text("Reintentar")
+                }
+            }
             OutlinedTextField(
                 value = busqueda,
                 onValueChange = vm::onBusqueda,

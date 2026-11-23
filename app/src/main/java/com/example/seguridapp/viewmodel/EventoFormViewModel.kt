@@ -3,16 +3,16 @@ package com.example.seguridapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.seguridapp.data.local.UsuarioEntity
-import com.example.seguridapp.data.repository.EventoRepository
-import com.example.seguridapp.model.Categoria
-import com.example.seguridapp.model.Prioridad
-import com.example.seguridapp.data.repository.Validators
+import com.example.seguridapp.repository.EventoRepository
+import com.example.seguridapp.data.model.Categoria
+import com.example.seguridapp.data.model.Prioridad
+import com.example.seguridapp.repository.Validators
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
+import kotlinx.coroutines.CancellationException
 data class EventoErrores(
     val categoria: String? = null,
     val prioridad: String? = null,
@@ -31,7 +31,8 @@ data class EventoFormState(
     val longitud: Double? = null,
     val fotoPath: String? = null,
     val errores: EventoErrores = EventoErrores(),
-    val guardando: Boolean = false
+    val guardando: Boolean = false,
+    val errorGeneral: String? = null
 )
 
 class EventoFormViewModel(private val repo: EventoRepository) : ViewModel() {
@@ -79,26 +80,55 @@ class EventoFormViewModel(private val repo: EventoRepository) : ViewModel() {
         _estado.update { it.copy(errores = errores) }
         return !errores.hayErrores
     }
+    fun registrar(
+        usuario: UsuarioEntity,
+        onExito: (Long) -> Unit
+    ): Boolean {
+        _estado.update { it.copy(errorGeneral = null) }
 
-        fun registrar(usuario: UsuarioEntity, onExito: (Long) -> Unit): Boolean {
         if (!validar()) return false
+
         val s = _estado.value
+
+        if (s.fotoPath != null) {
+            _estado.update {
+                it.copy(
+                    errorGeneral =
+                        "Las fotografías todavía no se pueden guardar en el servidor"
+                )
+            }
+            return false
+        }
+        if (s.guardando) return true
         viewModelScope.launch {
-            _estado.update { it.copy(guardando = true) }
-            delay(500)
-            val id = repo.crear(
-                categoria = s.categoria!!,
-                prioridad = s.prioridad!!,
-                ubicacionRef = s.ubicacionRef,
-                latitud = s.latitud,
-                longitud = s.longitud,
-                descripcion = s.descripcion,
-                fotoPath = s.fotoPath,
-                creadoPor = usuario.id,
-                autor = usuario.nombre
-            )
-            _estado.value = EventoFormState()
-            onExito(id)
+            _estado.update {
+                it.copy(guardando = true, errorGeneral = null)
+            }
+            try {
+                val id = repo.crear(
+                    categoria = s.categoria!!,
+                    prioridad = s.prioridad!!,
+                    ubicacionRef = s.ubicacionRef,
+                    latitud = s.latitud,
+                    longitud = s.longitud,
+                    descripcion = s.descripcion,
+                    fotoPath = s.fotoPath,
+                    creadoPor = usuario.id,
+                    autor = usuario.nombre
+                )
+                _estado.value = EventoFormState()
+                onExito(id)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                _estado.update {
+                    it.copy(
+                        guardando = false,
+                        errorGeneral =
+                            "No se pudo registrar el evento en el servidor"
+                    )
+                }
+            }
         }
         return true
     }

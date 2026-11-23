@@ -1,10 +1,9 @@
-package com.example.seguridapp.data.repository
+package com.example.seguridapp.repository
 
-import android.se.omapi.Session
 import com.example.seguridapp.data.local.UsuarioDao
 import com.example.seguridapp.data.local.UsuarioEntity
 import com.example.seguridapp.data.session.SessionStore
-import com.example.seguridapp.model.Rol
+import com.example.seguridapp.data.model.Rol
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 

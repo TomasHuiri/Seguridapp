@@ -41,9 +41,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.seguridapp.data.local.EventoEntity
-import com.example.seguridapp.model.Categoria
-import com.example.seguridapp.model.Estado
-import com.example.seguridapp.model.Prioridad
+import com.example.seguridapp.data.model.Categoria
+import com.example.seguridapp.data.model.Estado
+import com.example.seguridapp.data.model.Prioridad
 import com.example.seguridapp.ui.theme.CanceladoFondo
 import com.example.seguridapp.ui.theme.CanceladoTexto
 import com.example.seguridapp.ui.theme.CerradoFondo
@@ -56,7 +56,7 @@ import com.example.seguridapp.ui.theme.PrioridadAlta
 import com.example.seguridapp.ui.theme.PrioridadBaja
 import com.example.seguridapp.ui.theme.PrioridadMedia
 import com.example.seguridapp.ui.theme.PrioridadSinDefinir
-import com.example.seguridapp.data.repository.Formato
+import com.example.seguridapp.repository.Formato
 
 fun iconoCategoria(c: Categoria): ImageVector = when (c) {
     Categoria.INCENDIO -> Icons.Filled.LocalFireDepartment

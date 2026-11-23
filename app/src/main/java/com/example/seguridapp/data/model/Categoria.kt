@@ -1,4 +1,4 @@
-package com.example.seguridapp.model
+package com.example.seguridapp.data.model
 
 enum class Categoria(val etiqueta: String) {
     INCENDIO("Incendio estructural"),

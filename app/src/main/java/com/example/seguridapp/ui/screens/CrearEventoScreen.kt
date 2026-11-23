@@ -58,18 +58,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.seguridapp.data.local.UsuarioEntity
-import com.example.seguridapp.model.Categoria
-import com.example.seguridapp.model.Prioridad
+import com.example.seguridapp.data.model.Categoria
+import com.example.seguridapp.data.model.Prioridad
 import com.example.seguridapp.ui.components.BotonCarga
 import com.example.seguridapp.ui.components.CampoTexto
 import com.example.seguridapp.ui.components.DropdownCampo
 import com.example.seguridapp.ui.components.EvidenciaImagen
-import com.example.seguridapp.data.repository.Formato
-import com.example.seguridapp.data.repository.FotoHelper
-import com.example.seguridapp.data.repository.UbicacionHelper
+import com.example.seguridapp.repository.Formato
+import com.example.seguridapp.repository.FotoHelper
+import com.example.seguridapp.repository.UbicacionHelper
 import com.example.seguridapp.viewmodel.EventoFormViewModel
 import kotlinx.coroutines.launch
 import java.io.File
+import androidx.compose.runtime.LaunchedEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,6 +85,11 @@ fun CrearEventoScreen(
     val prioridades = Prioridad.entries.filter { it != Prioridad.INDETERMINADO }
     val context = LocalContext.current
     val snack = remember { SnackbarHostState() }
+    LaunchedEffect(s.errorGeneral) {
+        s.errorGeneral?.let {
+            snack.showSnackbar(it)
+        }
+    }
     val scope = rememberCoroutineScope()
     var obteniendoGps by remember { mutableStateOf(false) }
     var archivoPendiente by rememberSaveable { mutableStateOf<String?>(null) }
@@ -261,7 +267,11 @@ fun CrearEventoScreen(
                 texto = "Registrar evento",
                 cargando = s.guardando,
                 onClick = {
-                    if (!vm.registrar(usuario, onCreado)) mensaje("Revisa los campos marcados en rojo")
+                    if (!vm.registrar(usuario, onCreado) &&
+                        vm.estado.value.errorGeneral == null
+                    ) {
+                        mensaje("Revisa los campos marcados en rojo")
+                    }
                 },
                 modifier = Modifier.padding(bottom = 4.dp)
             )

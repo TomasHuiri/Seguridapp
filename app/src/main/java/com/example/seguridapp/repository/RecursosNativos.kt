@@ -1,4 +1,4 @@
-package com.example.seguridapp.data.repository
+package com.example.seguridapp.repository
 
 import android.Manifest
 import android.annotation.SuppressLint

@@ -1,4 +1,4 @@
-package com.example.seguridapp.model
+package com.example.seguridapp.data.model
 
 object TipoSeguimiento {
     const val CREACION = "CREACION"

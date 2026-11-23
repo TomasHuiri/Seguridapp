@@ -50,13 +50,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.seguridapp.data.local.UsuarioEntity
-import com.example.seguridapp.model.Rol
+import com.example.seguridapp.data.model.Rol
 import com.example.seguridapp.ui.components.DropdownCampo
 import com.example.seguridapp.viewmodel.UsuariosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PerfilScreen(usuario: UsuarioEntity, onUsuarios: () -> Unit, onCerrarSesion: () -> Unit) {
+
+fun PerfilScreen(
+    usuario: UsuarioEntity,
+    onUsuarios: () -> Unit,
+    onPublicaciones: () -> Unit,
+    onCerrarSesion: () -> Unit) {
     val rol = Rol.desde(usuario.rol)
     var confirmar by remember { mutableStateOf(false) }
 
@@ -115,7 +120,12 @@ fun PerfilScreen(usuario: UsuarioEntity, onUsuarios: () -> Unit, onCerrarSesion:
                     }
                 }
             }
-
+            Button(
+                onClick = onPublicaciones,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Ver publicaciones de prueba (API)")
+            }
             Spacer(Modifier.weight(1f, fill = false))
             Button(
                 onClick = { confirmar = true },

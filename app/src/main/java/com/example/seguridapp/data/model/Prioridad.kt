@@ -1,4 +1,4 @@
-package com.example.seguridapp.model
+package com.example.seguridapp.data.model
 
 enum class Prioridad(val etiqueta: String) {
     BAJA("Baja"),
