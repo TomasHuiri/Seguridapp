@@ -5,35 +5,39 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
 }
-
 val propiedadesLocales = Properties().apply {
     val archivo = rootProject.file("local.properties")
     if (archivo.exists()) archivo.inputStream().use { load(it) }
 }
-
 android {
     namespace = "com.example.seguridapp"
     compileSdk {
         version = release(37)
     }
-
     defaultConfig {
         applicationId = "com.example.seguridapp"
         minSdk = 24
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        manifestPlaceholders["MAPS_API_KEY"] = propiedadesLocales.getProperty("MAPS_API_KEY", "")
+        testInstrumentationRunner =
+            "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["MAPS_API_KEY"] =
+            propiedadesLocales.getProperty("MAPS_API_KEY", "")
     }
-
     buildTypes {
+        getByName("debug") {
+            enableUnitTestCoverage = true
+        }
         release {
             optimization {
                 enable = false
             }
+        }
+    }
+    testOptions {
+        unitTests.all {
+            it.useJUnitPlatform()
         }
     }
     compileOptions {
@@ -68,6 +72,12 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.maps.compose)
     testImplementation(libs.junit)
+    testImplementation(libs.kotest.runner)
+    testImplementation(libs.kotest.assertions)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.12.2")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.12.2")
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.espresso.core)
