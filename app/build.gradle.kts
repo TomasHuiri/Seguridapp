@@ -47,6 +47,27 @@ android {
     buildFeatures {
         compose = true
     }
+    // ... tu configuración actual ...
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("seguridapp.jks")
+            storePassword = "seguridapp123"
+            keyAlias = "seguridapp"
+            keyPassword = "seguridapp123"
+        }
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
 }
 
 dependencies {
