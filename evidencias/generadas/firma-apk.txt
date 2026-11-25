@@ -1,0 +1,17 @@
+﻿Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=Seguridapp, OU=Dev, O=Seguridapp, L=Santiago, ST=RM, C=CL
+Signer #1 certificate SHA-256 digest: 9bbf5f0411fc760b762e74009bea294367ebb5edab86c839748d5c052d064630
+Signer #1 certificate SHA-1 digest: 32a14cd34b723dcb2d24950c7be89a843d7d000e
+Signer #1 certificate MD5 digest: 52b0a754da1f85870d07cbd8a5375696
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 2048
+Signer #1 public key SHA-256 digest: 7811a2d408e08c5ad3e5a9350e8587f5ecd2169061f1466cf70184ca58d7d759
+Signer #1 public key SHA-1 digest: 26564c26eb43ae28081408366bf6102f7e4ec085
+Signer #1 public key MD5 digest: c64f17f8c3077f9c0042b3a58876d4b4

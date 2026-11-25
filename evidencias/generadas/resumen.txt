@@ -1,0 +1,13 @@
+﻿Seguridapp - evidencia de pruebas
+Fecha de lectura: 2026-11-24 21:13:22
+Fecha de XML: 11/24/2026 21:13:22
+Modo SoloReporte: False
+Alcance: repository + viewmodel + data/model completos, sin exclusiones adicionales.
+Lineas cubiertas: 730 / 790
+Cobertura de lineas: 92,41%
+Cobertura global de lineas: 26,36%
+Pruebas : 119
+Fallos : 0
+Errores : 0
+Omitidas : 0
+Umbral de 80% de lineas alcanzado en el alcance definido; verificar resultados y criterio docente.

@@ -1,0 +1,4 @@
+﻿"Paquete","Cubiertas","NoCubiertas","Total","Cobertura","RamasCubiertas","RamasNoCubiertas"
+"com/example/seguridapp/repository","231","30","261","88,51","109","21"
+"com/example/seguridapp/viewmodel","417","28","445","93,71","75","31"
+"com/example/seguridapp/data/model","82","2","84","97,62","39","6"

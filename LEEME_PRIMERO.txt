@@ -1,0 +1,12 @@
+SEGURIDAPP - KIT DE CIERRE DE EVALUACION
+
+1. Si ya paso el plazo oficial, NO copies ni subas nada al repositorio. Usa una copia local separada para verificar y preparar la defensa.
+2. Extrae el ZIP. Copia TODOS los archivos y carpetas extraidos a la raiz del proyecto real (donde estan gradlew.bat y settings.gradle.kts). Acepta combinar app/ y reemplazar README.md. Se agrega app/proguard-rules.pro porque Gradle lo referencia; no se modifica build.gradle.kts, Kotlin, APK ni JKS.
+3. Abre PowerShell en la raiz y ejecuta:
+   powershell -ExecutionPolicy Bypass -File .\herramientas\GENERAR_EVIDENCIAS.ps1
+4. Con el backend real iniciado ejecuta:
+   powershell -ExecutionPolicy Bypass -File .\herramientas\VERIFICAR_ENTREGA.ps1
+5. Enviame evidencias/generadas/resumen.txt, cobertura_por_paquete.csv y clases_por_lineas_no_cubiertas.csv, ademas del ZIP del backend real. Si falla Gradle, envia gradle.log. No publiques contrasenas ni claves de mapas.
+6. Completa los enlaces reales del backend y Trello y las capturas indicadas en evidencias/GUIA_EVIDENCIAS.md.
+
+El kit no incluye un backend inventado, no acredita pruebas que no se ejecutaron y no cambia la APK firmada. La cobertura anterior no corresponde necesariamente a esta version. Los scripts fueron revisados estaticamente; requieren Windows, SDK y Gradle para ejecutarse.

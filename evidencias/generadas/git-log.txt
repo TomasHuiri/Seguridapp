@@ -1,0 +1,16 @@
+﻿a8f082b 2026-11-24 max.morac@duocuc.cl Sube proyecto Seguridapp con APK firmado y configuracion release
+84e6ca7 2026-11-23 TomasHuiri integracion de pruebas unitarias de Model, ViewMode y Repository con una cobartura mayor del 80% de las 3
+8a20a19 2026-11-23 TomasHuiri integracion de pruebas unitarias de Model, ViewMode y Repository con una cobartura mayor del 80% de las 3
+0befd69 2026-11-23 TomasHuiri se integr├│ el consumo de APIs REST mediante Retrofit. Adem├ís, se adapt├│ la gesti├│n de eventos para comunicarse con Spring Boot y utilizar H2, incorporando historial, operaciones de eventos y manejo de errores.
+6d7bacb 2026-11-21 TomasHuiri creacion de validaciones de permisos segun el rol de usuario
+85bc1c8 2026-11-20 TomasHuiri reestructuracion del codigo para ser mas apegado al modelo MVVM
+c188008 2026-10-29 TomasHuiri mucho trabajo acumulado, pero en si toda la App
+50784c3 2026-10-29 TomasHuiri integracion de Color.kt entre otros diferentes cambios
+5aadb94 2026-10-28 TomasHuiri creacion de diferentes partes de la logica del codigo
+589784e 2026-10-27 TomasHuiri diversos agregados a la logica del model como Categoria.kt y Prioridad.kt
+d265a90 2026-10-26 TomasHuiri crear 'Estado' para las etiquetas del proceso
+dcf0702 2026-10-26 TomasHuiri dejar de versionar .idea y local.properties
+99d2aac 2026-10-26 TomasHuiri creacion de estructura MVVM
+07a1d8f 2026-10-26 TomasHuiri agregar m├│dulo app y configuraci├│n Gradle
+22c7e6b 2026-10-02 Clorazepamm Inicio de proyecto
+dcfbae3 2026-10-02 Clorazepamm Initial commit

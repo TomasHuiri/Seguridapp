@@ -1,0 +1,12 @@
+﻿Verificacion de entrega - Seguridapp
+Fecha: 2026-11-24 21:15:44
+PRESENTE: apk/Seguridapp-release.apk
+PRESENTE: app/seguridapp.jks
+PRESENTE: app/build.gradle.kts
+PRESENTE: app/proguard-rules.pro
+PRESENTE: README.md
+SHA256 APK: ED9F26FB2614324B421881BE2362ED889C1BAE3FD07E66EF125B45808EF5FF91
+APK: apksigner confirmo firma valida.
+Backend GET: HTTP 200; 4 eventos.
+GET solamente: no demuestra persistencia, CRUD completo, ni cantidad de servicios.
+Pendientes manuales: instalacion de APK, flujo funcional, codigo fuente real del servidor, Trello, GitHub y capturas.
